@@ -1,25 +1,31 @@
+import java.util.Scanner
 import kotlin.random.Random
 
 fun main() {
     var nPlayers :Int?
-    do {
+
+    var input :String? = null
+    while (input?.toIntOrNull() == null) {
         println("insert number of players")
-        nPlayers = readlnOrNull()?.toInt()
-    }while (nPlayers == null)
+        input = readlnOrNull()
+    }
+    nPlayers = input.toInt()
     val nGameCells = 30
     val positions = MutableList(nPlayers) {0}
     var diceValue :Int?
-    val gameCell = MutableList(nGameCells) {Random.nextInt(100).rem(3)}
+    val gameCell = MutableList(nGameCells) {Random.nextInt(3)}
+
     while (!positions.contains(nGameCells)) {
-        for (i in 0 until nPlayers) {
+        for (i in 0..<nPlayers) {
             do {
-                println("player ${i+1} turn enter the dice value")
-                diceValue = readlnOrNull()?.toInt()
+                println("Player ${i+1} turn enter the dice value")
+                diceValue = readlnOrNull()?.toIntOrNull()
+                if (diceValue == null || diceValue !in 1..6) println("Insert a number between 1 and 6")
             }while (diceValue == null || diceValue !in 1..6)
             positions[i] = newPositionEvaluation(gameCell, positions[i], diceValue)
-            positions.forEachIndexed({id,el ->println("player ${id+1}: position $el")})
+            positions.forEachIndexed { id, el -> println("player ${id + 1}: position $el") }
             if (positions[i] == gameCell.size) {
-                println("player ${i} won!")
+                println("player ${i+1} won!")
                 break
             }else{
                 printStatus(gameCell,positions)
@@ -27,16 +33,12 @@ fun main() {
         }
 
     }
-
-
-
-
 }
 
 fun printStatus(gameCell: MutableList<Int>, positions: MutableList<Int>) {
     for((id,playerPosition) in positions.withIndex()) {
         print( "${id+1}: ")
-        for (cell in 0 until gameCell.size) {
+        for (cell in 0..<gameCell.size) {
             if (cell == playerPosition) {
                 print("X")
             }else{
