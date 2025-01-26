@@ -1,8 +1,7 @@
-import java.util.Scanner
 import kotlin.random.Random
 
 fun main() {
-    var nPlayers :Int?
+    val nPlayers :Int?
 
     var input :String? = null
     while (input?.toIntOrNull() == null) {
