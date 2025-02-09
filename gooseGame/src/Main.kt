@@ -44,7 +44,7 @@ fun printStatus(gameCell: MutableList<Int>, positions: MutableList<Int>) {
                 print(gameCell[cell])
             }
         }
-        println()
+        println("W")
     }
 
 }
@@ -53,7 +53,7 @@ fun printStatus(gameCell: MutableList<Int>, positions: MutableList<Int>) {
 fun mapCell(type:Int) : ((Int) -> Int){
     when (type) {
         1 -> return { i -> i*2 }
-        3 -> return { i -> i-3 }
+        2 -> return { i -> i-3 }
     }
     return { i -> i }
 }
@@ -62,10 +62,22 @@ fun mapCell(type:Int) : ((Int) -> Int){
 fun newPositionEvaluation(gameCell:MutableList<Int>, position:Int, diceValue: Int): Int {
     val computeNewPosition = mapCell(gameCell[position])
     var newPosition = position + computeNewPosition(diceValue)
-    if(newPosition > gameCell.size) {
-        val remaining = newPosition - gameCell.size
-        newPosition -= remaining
+    /*if(newPosition > gameCell.size) {
+        val exceeding = newPosition - gameCell.size
+        newPosition = gameCell.size - exceeding
 
-    }
+    }else if (newPosition < 0) { newPosition = 0 }
     return newPosition
+    */
+    when {
+        newPosition > gameCell.size ->{
+            val exceeding = newPosition - gameCell.size
+            return gameCell.size - exceeding
+        }
+        newPosition < 0 ->{ return 0 }
+        else ->{
+            return newPosition
+        }
+    }
+
 }
